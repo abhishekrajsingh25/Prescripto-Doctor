@@ -155,3 +155,4 @@ Feel free to contribute, suggest features, or open issues.
 
 Thank you for visiting. I hope you find my work interesting and valuable! To see the Website. 
 - For Frontend, Click <a href="https://prescripto-doctor-abhishek.vercel.app/" >Here</a>.
+- For Admin, Click <a href="https://prescripto-doctor-admin-abhishek.vercel.app/" >Here</a>.
