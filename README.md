@@ -1,6 +1,7 @@
-# 🏥 Doctor Appointment Booking System with Admin and Doctor Panel
+# 🏥 Doctor Appointment Booking System with Admin and Doctor Panel – Microservices-Based Full Stack Application
 
-This is a full-stack Doctor Appointment Booking web application designed to streamline the process of scheduling appointments between patients and doctors. The system includes separate interfaces for **Patients**, **Doctors**, and an **Admin Panel** to manage users, appointments, and schedules.
+This is a full-stack Doctor Appointment Booking System designed to streamline appointment scheduling between patients and doctors.
+The project evolved from a monolithic backend into a microservices-oriented architecture, incorporating Redis caching, event-driven notification handling, and audit logging, while maintaining separate interfaces for **Patients**, **Doctors**, and **Admin**.
 ---
 
 ## ✨ Features
@@ -10,6 +11,7 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Browse and search doctors by specialization
 - Book or cancel appointments
 - View appointment history and upcoming schedules
+- Secure online payments
 - Responsive and user-friendly interface
 
 ### Doctor Panel Features:
@@ -23,6 +25,14 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Add new doctor 
 - Dashboard with overall statistics
 - Manage appointments (View, Update, Cancel)
+
+## Architecture Highlights
+- Modular Backend Design (prepared for microservices)
+- Event-driven communication between services
+- Redis caching layer for performance optimization
+- Notification Service for email-based user communication
+- Audit Service for tracking important system events
+- Designed with serverless deployment constraints in mind
 
 ## Tech Stack
 
@@ -40,6 +50,20 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Multer for image uploads
 - Razorpay integration for payments
 
+## Microservices
+### Notification Service
+- Handles appointment booking, cancellation, and payment emails
+### Audit Service
+- Stores system events for traceability and debugging
+  
+## Caching & Messaging
+### Redis (Upstash)
+Used for caching:
+- Doctor lists
+- Dashboards
+- Appointment data
+Reduces database load and improves response time
+
 ### Additional Tools:
 
 - Cloudinary (for image storage)
@@ -47,12 +71,36 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Bcrypt (for password hashing)
 - Cors (for handling cross-origin requests)
 
+## Redis Usage
+Redis is used as a performance optimization layer:
+### Cache frequently accessed data such as:
+- Doctor listings
+- User appointments
+- Doctor and admin dashboards
+### Cache invalidation is handled on:
+- Appointment booking
+- Appointment cancellation
+- Profile updates
+### The system is designed so that:
+- Redis failures do not break core functionality
+- Database is always the fallback source of truth
+
+## Notification & Audit System
+### Backend publishes events like:
+- APPOINTMENT_BOOKED
+- APPOINTMENT_CANCELLED
+- PAYMENT_SUCCESS
+### Notification service listens to these events and sends emails
+### Audit service stores all events for tracking and debugging
+### Designed to work reliably in a serverless environment (Vercel)
+
 ## Setup Instructions
 
 ### Prerequisites:
 
 - Node.js and npm installed
 - MongoDB installed or a cloud MongoDB database (MongoDB Atlas)
+- Redis (Upstash recommended)
 
 ### Installation
 
@@ -93,6 +141,9 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
    RAZORPAY_KEY_SECRET = your_razorpay_secret_key
    RAZORPAY_KEY_ID = your_razorpay_key_id
    CURRENCY = your_currency
+   REDIS_URL=your_upstash_redis_url
+   NOTIFICATION_SERVICE_URL=your_notification_service_url
+   AUDIT_SERVICE_URL=your_audit_service_url
    ```
 
 6. **Environment Variables Setup**
