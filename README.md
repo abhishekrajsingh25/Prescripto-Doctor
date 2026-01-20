@@ -219,7 +219,7 @@ Redis is used as a performance optimization layer:
    cd ../notification-service
    npm run dev
    ```
-   The notification-service should now be running on `http://localhost:501`.
+   The notification-service should now be running on `http://localhost:5001`.
 
 5. **Start the Audit Service**
    ```bash
