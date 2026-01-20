@@ -81,6 +81,8 @@ Redis is used as a performance optimization layer:
 - Appointment booking
 - Appointment cancellation
 - Profile updates
+### Distributed locking:
+- Appointment slot locking to prevent double booking
 ### The system is designed so that:
 - Redis failures do not break core functionality
 - Database is always the fallback source of truth
