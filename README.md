@@ -129,8 +129,20 @@ Redis is used as a performance optimization layer:
    cd ../admin
    npm install
    ```
+  
+5. **Install Notification Service Dependencies**
+   ```bash
+   cd ../notification-service
+   npm install
+   ```
+
+6. **Install Audit Service Dependencies**
+   ```bash
+   cd ../audit-service
+   npm install
+   ```
    
-5. **Environment Variables Setup**
+7. **Environment Variables Setup**
    Create a .env file in the root directory of the backend with the following:
    ```bash
    MONGODB_URI = your_mongo_database_uri
@@ -148,17 +160,35 @@ Redis is used as a performance optimization layer:
    AUDIT_SERVICE_URL=your_audit_service_url
    ```
 
-6. **Environment Variables Setup**
+8. **Environment Variables Setup**
    Create a .env file in the root directory of the frontend with the following:
    ```bash
    VITE_BACKEND_URL = "http://localhost:4000"
    VITE_RAZORPAY_KEY_ID = your_razorpay_key_id
    ```
    
-7. **Environment Variables Setup**
+9. **Environment Variables Setup**
    Create a .env file in the root directory of the admin panel with the following:
    ```bash
    VITE_BACKEND_URL = "http://localhost:4000"
+   ```
+
+9. **Environment Variables Setup**
+   Create a .env file in the root directory of the notification service with the following:
+   ```bash
+   PORT=5001
+    MONGODB_URI=your_url
+
+    BREVO_USERNAME=your_name
+    BREVO_PASSWORD=your_pass
+    BREVO_FROM_EMAIL=your_gmail
+   ```
+
+9. **Environment Variables Setup**
+   Create a .env file in the root directory of the audit service with the following:
+   ```bash
+   PORT=5002
+   DATABASE_URL=your_url
    ```
    
 ### Running the Application
@@ -184,12 +214,27 @@ Redis is used as a performance optimization layer:
    ```
    The admin panel should now be running on `http://localhost:5174`.
 
+4. **Start the Notification Service**
+   ```bash
+   cd ../notification-service
+   npm run dev
+   ```
+   The notification-service should now be running on `http://localhost:501`.
+
+5. **Start the Audit Service**
+   ```bash
+   cd ../audit-service
+   npm run dev
+   ```
+   The audit-service should now be running on `http://localhost:5002`.
+
 ## Deployment
 
 - The frontend can be deployed using Vercel.
 - The backend can be deployed using Vercel.
 - The admin can be deployed using Vercel.
 - MongoDB can be hosted on MongoDB Atlas.
+- Redis can be hosted on Upstash
 
 ## Contributing
 
