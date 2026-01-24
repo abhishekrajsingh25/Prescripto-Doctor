@@ -20,7 +20,15 @@ connectCloudinary();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+const swaggerHtml = swaggerUi.generateHTML(swaggerSpec, {
+  explorer: true,
+});
+
+app.get("/api-docs", (req, res) => {
+  res.send(swaggerHtml);
+});
 
 //api endpoints
 app.use("/api/user", userRouter);
