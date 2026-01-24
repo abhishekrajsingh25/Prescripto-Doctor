@@ -22,13 +22,18 @@ app.use(cors());
 
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-const swaggerHtml = swaggerUi.generateHTML(swaggerSpec, {
-  explorer: true,
-});
-
+// INLINE swagger UI (Vercel-safe)
 app.get("/api-docs", (req, res) => {
-  res.send(swaggerHtml);
-});
+  const html = swaggerUi.generateHTML(swaggerSpec, {
+    explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
+
+  res.setHeader("Content-Type", "text/html");
+  res.send(html);
+});;
 
 //api endpoints
 app.use("/api/user", userRouter);
