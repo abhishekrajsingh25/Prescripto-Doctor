@@ -27,8 +27,17 @@ app.use(cors());
 app.get("/api-docs", (req, res) => {
   const html = swaggerUi.generateHTML(swaggerSpec, {
     explorer: true,
-    swaggerOptions: { persistAuthorization: true },
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customCssUrl:
+      "https://unpkg.com/swagger-ui-dist@5/swagger-ui.css",
+    customJs: [
+      "https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js",
+      "https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js",
+    ],
   });
+
   res.status(200).setHeader("Content-Type", "text/html").end(html);
 });
 
