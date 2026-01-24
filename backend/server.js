@@ -21,25 +21,7 @@ connectCloudinary();
 app.use(express.json());
 app.use(cors());
 
-// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// ✅ INLINE Swagger (Vercel-safe)
-app.get("/api-docs", (req, res) => {
-  const html = swaggerUi.generateHTML(swaggerSpec, {
-    explorer: true,
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-    customCssUrl:
-      "https://unpkg.com/swagger-ui-dist@5/swagger-ui.css",
-    customJs: [
-      "https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js",
-      "https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js",
-    ],
-  });
-
-  res.status(200).setHeader("Content-Type", "text/html").end(html);
-});
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //api endpoints
 app.use("/api/user", userRouter);

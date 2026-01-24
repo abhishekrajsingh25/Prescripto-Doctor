@@ -1,8 +1,5 @@
 import swaggerJsdoc from "swagger-jsdoc";
 
-const SERVER_URL =
-  process.env.SWAGGER_SERVER_URL || "http://localhost:4000";
-
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -14,11 +11,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: SERVER_URL,
-        description:
-          process.env.NODE_ENV === "production"
-            ? "Production server"
-            : "Local server",
+        url: "http://localhost:4000",
+        description: "Local server",
       },
     ],
     components: {
@@ -40,8 +34,11 @@ const swaggerOptions = {
         },
       },
     },
+    security: [],
   },
   apis: ["./routes/*.js"],
 };
 
-export default swaggerJsdoc(swaggerOptions);
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+export default swaggerSpec;
