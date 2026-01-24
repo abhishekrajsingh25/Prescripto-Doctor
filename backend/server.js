@@ -13,6 +13,7 @@ import swaggerSpec from "./config/swagger.js";
 //App Config
 const app = express();
 const port = process.env.PORT || 4000;
+
 connectDB();
 connectCloudinary();
 
@@ -22,18 +23,14 @@ app.use(cors());
 
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// INLINE swagger UI (Vercel-safe)
+// ✅ INLINE Swagger (Vercel-safe)
 app.get("/api-docs", (req, res) => {
   const html = swaggerUi.generateHTML(swaggerSpec, {
     explorer: true,
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
+    swaggerOptions: { persistAuthorization: true },
   });
-
-  res.setHeader("Content-Type", "text/html");
-  res.send(html);
-});;
+  res.status(200).setHeader("Content-Type", "text/html").end(html);
+});
 
 //api endpoints
 app.use("/api/user", userRouter);
