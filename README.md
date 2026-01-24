@@ -1,6 +1,7 @@
-# 🏥 Doctor Appointment Booking System with Admin and Doctor Panel
+# 🏥 Doctor Appointment Booking System with Admin and Doctor Panel – Microservices-Based Full Stack Application
 
-This is a full-stack Doctor Appointment Booking web application designed to streamline the process of scheduling appointments between patients and doctors. The system includes separate interfaces for **Patients**, **Doctors**, and an **Admin Panel** to manage users, appointments, and schedules.
+This is a full-stack Doctor Appointment Booking System designed to streamline appointment scheduling between patients and doctors.
+The project evolved from a monolithic backend into a microservices-oriented architecture, incorporating Redis caching, event-driven notification handling, and audit logging, while maintaining separate interfaces for **Patients**, **Doctors**, and **Admin**.
 ---
 
 ## ✨ Features
@@ -10,6 +11,7 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Browse and search doctors by specialization
 - Book or cancel appointments
 - View appointment history and upcoming schedules
+- Secure online payments
 - Responsive and user-friendly interface
 
 ### Doctor Panel Features:
@@ -23,6 +25,14 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Add new doctor 
 - Dashboard with overall statistics
 - Manage appointments (View, Update, Cancel)
+
+## Architecture Highlights
+- Modular Backend Design (prepared for microservices)
+- Event-driven communication between services
+- Redis caching layer for performance optimization
+- Notification Service for email-based user communication
+- Audit Service for tracking important system events
+- Designed with serverless deployment constraints in mind
 
 ## Tech Stack
 
@@ -40,6 +50,20 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Multer for image uploads
 - Razorpay integration for payments
 
+## Microservices
+### Notification Service
+- Handles appointment booking, cancellation, and payment emails
+### Audit Service
+- Stores system events for traceability and debugging
+  
+## Caching & Messaging
+### Redis (Upstash)
+Used for caching:
+- Doctor lists
+- Dashboards
+- Appointment data
+Reduces database load and improves response time
+
 ### Additional Tools:
 
 - Cloudinary (for image storage)
@@ -47,12 +71,38 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
 - Bcrypt (for password hashing)
 - Cors (for handling cross-origin requests)
 
+## Redis Usage
+Redis is used as a performance optimization layer:
+### Cache frequently accessed data such as:
+- Doctor listings
+- User appointments
+- Doctor and admin dashboards
+### Cache invalidation is handled on:
+- Appointment booking
+- Appointment cancellation
+- Profile updates
+### Distributed locking:
+- Appointment slot locking to prevent double booking
+### The system is designed so that:
+- Redis failures do not break core functionality
+- Database is always the fallback source of truth
+
+## Notification & Audit System
+### Backend publishes events like:
+- APPOINTMENT_BOOKED
+- APPOINTMENT_CANCELLED
+- PAYMENT_SUCCESS
+### Notification service listens to these events and sends emails
+### Audit service stores all events for tracking and debugging
+### Designed to work reliably in a serverless environment (Vercel)
+
 ## Setup Instructions
 
 ### Prerequisites:
 
 - Node.js and npm installed
 - MongoDB installed or a cloud MongoDB database (MongoDB Atlas)
+- Redis (Upstash recommended)
 
 ### Installation
 
@@ -79,8 +129,20 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
    cd ../admin
    npm install
    ```
+  
+5. **Install Notification Service Dependencies**
+   ```bash
+   cd ../notification-service
+   npm install
+   ```
+
+6. **Install Audit Service Dependencies**
+   ```bash
+   cd ../audit-service
+   npm install
+   ```
    
-5. **Environment Variables Setup**
+7. **Environment Variables Setup**
    Create a .env file in the root directory of the backend with the following:
    ```bash
    MONGODB_URI = your_mongo_database_uri
@@ -93,19 +155,40 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
    RAZORPAY_KEY_SECRET = your_razorpay_secret_key
    RAZORPAY_KEY_ID = your_razorpay_key_id
    CURRENCY = your_currency
+   REDIS_URL=your_upstash_redis_url
+   NOTIFICATION_SERVICE_URL=your_notification_service_url
+   AUDIT_SERVICE_URL=your_audit_service_url
    ```
 
-6. **Environment Variables Setup**
+8. **Environment Variables Setup**
    Create a .env file in the root directory of the frontend with the following:
    ```bash
    VITE_BACKEND_URL = "http://localhost:4000"
    VITE_RAZORPAY_KEY_ID = your_razorpay_key_id
    ```
    
-7. **Environment Variables Setup**
+9. **Environment Variables Setup**
    Create a .env file in the root directory of the admin panel with the following:
    ```bash
    VITE_BACKEND_URL = "http://localhost:4000"
+   ```
+
+9. **Environment Variables Setup**
+   Create a .env file in the root directory of the notification service with the following:
+   ```bash
+   PORT=5001
+    MONGODB_URI=your_url
+
+    BREVO_USERNAME=your_name
+    BREVO_PASSWORD=your_pass
+    BREVO_FROM_EMAIL=your_gmail
+   ```
+
+9. **Environment Variables Setup**
+   Create a .env file in the root directory of the audit service with the following:
+   ```bash
+   PORT=5002
+   DATABASE_URL=your_url
    ```
    
 ### Running the Application
@@ -131,12 +214,27 @@ This is a full-stack Doctor Appointment Booking web application designed to stre
    ```
    The admin panel should now be running on `http://localhost:5174`.
 
+4. **Start the Notification Service**
+   ```bash
+   cd ../notification-service
+   npm run dev
+   ```
+   The notification-service should now be running on `http://localhost:5001`.
+
+5. **Start the Audit Service**
+   ```bash
+   cd ../audit-service
+   npm run dev
+   ```
+   The audit-service should now be running on `http://localhost:5002`.
+
 ## Deployment
 
 - The frontend can be deployed using Vercel.
 - The backend can be deployed using Vercel.
 - The admin can be deployed using Vercel.
 - MongoDB can be hosted on MongoDB Atlas.
+- Redis can be hosted on Upstash
 
 ## Contributing
 
