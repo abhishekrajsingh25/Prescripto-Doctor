@@ -68,7 +68,7 @@ Swagger provides a clear and interactive interface to:
 - Environment-aware server configuration
 
 ### Access Swagger UI
-http://localhost:4000/api-docs
+"http://localhost:4000/api-docs"
 
 ## Microservices
 ### Notification Service
