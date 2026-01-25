@@ -10,6 +10,8 @@ import userRouter from "./routes/userRoute.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
 
+import aiRouter from "./routes/aiRoute.js";
+
 //App Config
 const app = express();
 const port = process.env.PORT || 4000;
@@ -27,6 +29,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
+app.use("/api/ai", aiRouter);
 
 app.get("/", (req, res) => {
   res.send("API Working");
